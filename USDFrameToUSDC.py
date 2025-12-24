@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from pxr import Usd, UsdGeom, Sdf, Vt
 import os
 import sys
@@ -102,7 +103,7 @@ def merge_usd_sequence_to_single_file(
     output_stage.SetStartTimeCode(start_frame)
     output_stage.SetEndTimeCode(end_frame)
     
-    print(f"Création du fichier: {output_file}")
+    print(f"Making file: {output_file}")
     print(f"Frame range: {start_frame}-{end_frame}")
     print(f"Save interval: every {save_interval} frames")
     
@@ -147,9 +148,9 @@ def merge_usd_sequence_to_single_file(
                 # IMPORTANT : Désactiver l'interpolation pour les types non-interpolables
                 if type_name.type.pythonClass in [int, str] or 'int' in str(type_name).lower():
                     output_attr.SetMetadata('interpolation', 'held')
-                    print(f"\n  - Attribut créé (NO INTERP): {attr_name} ({type_name})")
+                    print(f"\n  - Attribut made (NO INTERP): {attr_name} ({type_name})")
                 else:
-                    print(f"\n  - Attribut créé: {attr_name} ({type_name})")
+                    print(f"\n  - Attribut made: {attr_name} ({type_name})")
         
         # Maintenant, copier les VALEURS de cette frame
         output_prim = output_stage.GetPrimAtPath(prim_path)

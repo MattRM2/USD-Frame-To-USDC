@@ -15,59 +15,81 @@ Merge USD frame sequences into a single time-sampled USD file. Optimized for Sto
 
 ### Windows (WSL2 - Recommended)
 ```bash
-# Install WSL2 (if not already installed)
+# Install WSL2 via Windows tools (recommended for beginers)
+Tutorial: "https://www.youtube.com/watch?v=OvxLXx49cfk"
+
+# Install WSL2 command line (if not already installed)
 wsl --install
 
 # Inside WSL, run:
 sudo apt update
 sudo apt install -y python3-pip
-pip3 install usd-core --break-system-packages
+pip3 install usd-core
 
 # Download the script
-cd ~
-wget https://github.com/YOUR_USERNAME/usd-frame-tools/raw/main/USDFrameToUSDC.py
+cd $HOME
+mkdir USDFrameToUSDC
+cd USDFrameToUSDC
+wget https://raw.githubusercontent.com/MattRM2/USD-Frame-To-USDC/refs/heads/main/USDFrameToUSDC.py
 chmod +x USDFrameToUSDC.py
+
+# Init the path in .bashrc
+nano $HOME/.bashrc
+
+After the last line, add: export USD=$HOME/USDFrameToUSDC/
+Do the shortcut ctrl+o (and enter to write the file) and ctrl+x and source the new .bashrc
+
+source ~/.bashrc
 ```
+Test installation: 
+```bash
+cd /
+python3 $USD/USDFrameToUSDC.py -h
+```
+Help is displayed in the terminal, and the installation is complete.
 
 ### Linux / macOS
 ```bash
 pip3 install usd-core
-wget https://github.com/YOUR_USERNAME/usd-frame-tools/raw/main/USDFrameToUSDC.py
+wget https://raw.githubusercontent.com/MattRM2/USD-Frame-To-USDC/refs/heads/main/USDFrameToUSDC.py
 chmod +x USDFrameToUSDC.py
 ```
-You can add the directory containing the script to your WSL Linux PATH environment variable, so you can call it from anywhere
+You can have the path like on WSL to your system too.
 
 ## Usage
 
 ### Merge USD Sequence
 ```bash
 # Basic merge
-python3 USDFrameToUSDC.py -i "./sim/frame_{frame:04d}.usd" -o merged.usdc -s 0 -e 200
+python3 $USD/USDFrameToUSDC.py -i ./sim/frame.{frame:04d}.usd -o merged.usdc -s 0 -e 200
 
 # With custom prim path
-python3 USDFrameToUSDC.py -i "./FlipSystem.fluid.{frame:04d}.usd" -o output.usdc -s 1 -e 250 -p /Root/Points
+python3 $USD/USDFrameToUSDC.py -i ./FlipSystem.fluid.{frame:04d}.usd -o output.usdc -s 1 -e 250 -p /Root/Points
 
 # Memory optimization (save every 5 frames)
-python3 USDFrameToUSDC.py -i "./sim/frame_{frame:04d}.usd" -o merged.usdc -s 0 -e 500 --save-interval 5
+python3 $USD/USDFrameToUSDC.py -i ./sim/frame.{frame:04d}.usd -o merged.usdc -s 0 -e 500 --save-interval 5
 ```
 
 ### Inspect USD File
 ```bash
 # Display hierarchy
-python3 USDFrameToUSDC.py -t frame_0001.usd
+python3 $USD/USDFrameToUSDC.py -t ./frame.0001.usd
 
 # Limit depth
-python3 USDFrameToUSDC.py -t frame_0001.usd --max-depth 3
+python3 $USD/USDFrameToUSDC.py -t ./frame.0001.usd --max-depth 3
 ```
 
-### From Windows PowerShell (using WSL)
-```powershell
-# Navigate to your simulation folder
-cd G:\YOUR_SIMULATIONS
-
-# Run via WSL
-wsl python3 USDFrameToUSDC.py -i "./FlipSystem.fluid.{frame:04d}.usd" -o merged.usdc -s 0 -e 200
+### Navigate to your Windows drive
+All Windows drives are located under /mnt in WSL
+```bash
+cd /mnt
+ls
 ```
+You can use "cd" to navigate to the folder containing your USD frames.
+
+### Configure your WSL virtual machine
+Open the Windows menu and search for WSL settings and open it. Now you can change parameters to have the ressources needed. Always keep 30% of ram for Windows (e.g. 128gb of ram, give 90Gb to the virtual machine max).
+
 
 ## Command Line Options
 ```
@@ -96,19 +118,22 @@ For large simulations (>1M points), adjust `--save-interval`:
 ```bash
 # 1. Export from Storm Hydro (1 USD per frame)
 # 2. Merge into single file
-python3 USDFrameToUSDC.py -i "./FlipSystem.fluid.{frame:04d}.usd" -o simulation.usdc -s 0 -e 200 -p /Root/Points
+python3 $USD/USDFrameToUSDC.py -i ./FlipSystem.fluid.{frame:04d}.usd -o simulation.usdc -s 0 -e 200 -p /Root/Points
 
-# 3. Import in Blender (File > Import > USD)
+# 3. Import in Blender (File > Import > USD) with scale option to 10
 ```
 
 ### Inspect Before Merging
 ```bash
 # Check the structure of your first frame
-python3 USDFrameToUSDC.py -t FlipSystem.fluid.0001.usd
+python3 $USD/USDFrameToUSDC.py -t ./FlipSystem.fluid.0001.usd
 
 # Find the correct prim path, then merge
-python3 USDFrameToUSDC.py -i "./FlipSystem.fluid.{frame:04d}.usd" -o output.usdc -s 0 -e 200 -p /YOUR/PRIM/PATH
+python3 $USD/USDFrameToUSDC.py -i ./FlipSystem.fluid.{frame:04d}.usd -o output.usdc -s 0 -e 200 -p /YOUR/PRIM/PATH
 ```
+
+### Import in Blender 5.0.x
+
 
 ## Troubleshooting
 
@@ -120,7 +145,7 @@ python3 USDFrameToUSDC.py -i "./FlipSystem.fluid.{frame:04d}.usd" -o output.usdc
 
 ## Tested With
 
-- Storm Hydro 1.x+ fluid simulations
+- Storm Hydro 1.x+ fluid simulations / Storm VFX
 - Houdini USD exports
 - Maya USD exports
 - Blender 4.x/5.x USD import
@@ -140,4 +165,4 @@ Issues and PRs welcome!
 
 ## Author
 
-Created for Storm Hydro/VFX, Houdini or others pipeline workflows by Matthieu "MattRM" Barbié & Claude Ai."# USD-Frame-To-USDC" 
+Created for Storm Hydro/VFX, Houdini or others pipeline workflows by Matthieu "MattRM" Barbié & Claude Ai.
