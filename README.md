@@ -97,7 +97,7 @@ Open the Windows menu and search for WSL settings and open it. Now you can chang
 -o, --output        Output USD file path (e.g., "merged.usdc")
 -s, --start         Start frame number
 -e, --end           End frame number
--p, --prim-path     Prim path in USD file (default: /Root/Points)
+-p, --prim-path     Prim path in USD file (default: /)
 --save-interval     Save every N frames to optimize memory (default: 10)
 -t, --tree          Display USD file hierarchy
 --max-depth         Maximum depth for tree display
