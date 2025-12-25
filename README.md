@@ -1,6 +1,6 @@
 # USD Frame Tools
 
-Merge USD frame sequences into a single time-sampled USD file. Optimized for Storm Hydro/VFX, Houdini or others simulations with memory-efficient processing.
+Merge USD frame sequences into a single time-sampled USD file. Optimized for Storm Hydro/VFX, Houdini or others simulations tools with memory-efficient processing.
 
 ## Features
 
@@ -133,7 +133,7 @@ python3 $USD/USDFrameToUSDC.py -i ./FlipSystem.fluid.{frame:04d}.usd -o output.u
 ```
 
 ### Import in Blender 5.0.x
-
+[![Watch the video](https://img.youtube.com/vi/94skWnEihzI/0.jpg)](https://www.youtube.com/watch?v=94skWnEihzI)
 
 ## Troubleshooting
 
