@@ -47,10 +47,10 @@ def print_usd_tree(usd_file: str, max_depth: int = None):
             prefix = "  " * indent
             print(f"{prefix}{symbol} {prim.GetName()} ({prim_type})")
             
-            # Afficher les attributs principaux si c'est un Points ou Mesh
+            # Afficher TOUS les attributs si c'est un Points ou Mesh
             if indent < 3 and (prim.IsA(UsdGeom.Points) or prim.IsA(UsdGeom.Mesh)):
                 attrs = prim.GetAttributes()
-                interesting_attrs = []
+                all_attrs = []
                 
                 for attr in attrs:
                     attr_name = attr.GetName()
@@ -58,14 +58,13 @@ def print_usd_tree(usd_file: str, max_depth: int = None):
                     if any(key in attr_name for key in ['primvar', 'points', 'velocities', 'normals', 'ids']):
                         value = attr.Get()
                         if value is not None and hasattr(value, '__len__'):
-                            interesting_attrs.append(f"{attr_name} [{len(value)}]")
+                            all_attrs.append(f"{attr_name} [{len(value)}]")
                         else:
-                            interesting_attrs.append(attr_name)
+                            all_attrs.append(attr_name)
                 
-                if interesting_attrs:
-                    attrs_str = ", ".join(interesting_attrs[:5])  # Limiter à 5
-                    if len(interesting_attrs) > 5:
-                        attrs_str += f" ... (+{len(interesting_attrs) - 5} more)"
+                if all_attrs:
+                    # Afficher TOUS les attributs sans limitation
+                    attrs_str = ", ".join(all_attrs)
                     print(f"{prefix}  └─ Attributes: {attrs_str}")
             
             # Récursion sur les enfants
